@@ -35,7 +35,7 @@ export function Navigation({ onSearchClick }: NavigationProps) {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
             ? 'glass-nav shadow-nav'
-            : 'bg-transparent'
+            : 'bg-[#2D1F2D]/85 backdrop-blur-md'
         }`}
         style={{ height: 64 }}
       >
