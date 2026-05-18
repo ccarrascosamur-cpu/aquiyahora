@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Custom Aquí & Ahora design tokens */
+    --bg-cream: #FAF7F2;
+    --bg-white: #FFFFFF;
+    --bg-rose: #FCE8F0;
+    --bg-lilac: #F0E6FF;
+    --text-primary: #2D1F2D;
+    --text-secondary: #6B5B6B;
+    --text-muted: #9B8B9B;
+    --accent-rose: #E8A0BF;
+    --accent-lilac: #C9B1FF;
+    --accent-peach: #FFD4B8;
+    --accent-sage: #C5D5C0;
+    --border-custom: #EBE3EB;
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.85);
+
+    /* shadcn overrides */
+    --background: 40 33% 96%;
+    --foreground: 300 18% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 300 18% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 300 18% 15%;
+    --primary: 335 51% 75%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 270 100% 85%;
+    --secondary-foreground: 300 18% 15%;
+    --muted: 40 33% 96%;
+    --muted-foreground: 300 10% 52%;
+    --accent: 30 100% 86%;
+    --accent-foreground: 300 18% 15%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 300 14% 90%;
+    --input: 300 14% 90%;
+    --ring: 335 51% 75%;
+    --radius: 0.625rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-cream);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+
+  ::selection {
+    background-color: var(--accent-rose);
+    color: white;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-body {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-elegant {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+
+  .glass-nav {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .gradient-hero {
+    background: linear-gradient(135deg, var(--bg-rose) 0%, var(--bg-lilac) 100%);
+  }
+
+  .gradient-rose-lilac {
+    background: linear-gradient(135deg, var(--bg-rose) 0%, var(--bg-lilac) 100%);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
