@@ -168,7 +168,11 @@ export function AdminPage({
       updates.model = editModel.trim() || undefined;
     }
     onUpdateProduct(selectedProduct.id, updates);
-    setSelectedProduct(prev => prev ? { ...prev, ...updates } : null);
+    // Find the updated product from the products list to get the fully merged object
+    const updated = products.find(p => p.id === selectedProduct.id);
+    if (updated) {
+      setSelectedProduct(updated);
+    }
     addToast('Producto actualizado', 'success');
   };
 
