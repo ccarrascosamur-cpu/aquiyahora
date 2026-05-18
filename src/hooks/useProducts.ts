@@ -12,12 +12,17 @@ export function useProducts() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('todos');
 
-  // Merge base products with custom ones, then apply images
-  const baseProducts = [...PRODUCTS, ...customProducts];
-  const products = baseProducts.map(p => ({
-    ...p,
-    image: images[p.id] || p.image,
-  }));
+  // Merge: start with base products, then override with custom ones by id
+  const customById = new Map(customProducts.map(p => [p.id, p]));
+  const products = PRODUCTS.map(p => {
+    const custom = customById.get(p.id);
+    const merged = custom ? { ...p, ...custom } : p;
+    return { ...merged, image: images[p.id] || merged.image };
+  }).concat(
+    // Add custom products that don't exist in base
+    customProducts.filter(p => !PRODUCTS.some(bp => bp.id === p.id))
+      .map(p => ({ ...p, image: images[p.id] || p.image }))
+  );
 
   // Filter products
   const filteredProducts = products.filter(p => {
