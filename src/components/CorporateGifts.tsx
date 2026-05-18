@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Gift, Briefcase, ArrowRight, Users, Heart, Package } from 'lucide-react';
+import { Gift, Briefcase, ArrowRight, Heart, Package, Leaf, Droplets, Globe } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 
 export function CorporateGifts() {
@@ -84,9 +84,9 @@ export function CorporateGifts() {
                 desc: 'Armamos packs a medida según tu presupuesto y necesidad.',
               },
               {
-                icon: Users,
-                title: 'Volumen flexible',
-                desc: 'Desde 10 unidades hasta grandes tiradas corporativas.',
+                icon: Leaf,
+                title: 'Extractos naturales',
+                desc: 'Fórmulas con ingredientes de origen natural y esencias puras.',
               },
               {
                 icon: Heart,
@@ -117,6 +117,37 @@ export function CorporateGifts() {
                 </p>
               </motion.div>
             ))}
+
+            {/* Brand values badges */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="sm:col-span-2 mt-2"
+            >
+              <div className="flex flex-wrap items-center justify-center gap-6 p-5 rounded-card bg-cream border border-border-custom/60">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-full border-2 border-accent-rose/40 flex items-center justify-center">
+                    <Globe size={16} className="text-accent-rose" />
+                  </div>
+                  <span className="font-body text-xs font-medium text-text-secondary">Earth Friendly</span>
+                </div>
+                <div className="w-px h-6 bg-border-custom hidden sm:block" />
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-full border-2 border-accent-rose/40 flex items-center justify-center">
+                    <Leaf size={16} className="text-accent-rose" />
+                  </div>
+                  <span className="font-body text-xs font-medium text-text-secondary">Natural Extracts</span>
+                </div>
+                <div className="w-px h-6 bg-border-custom hidden sm:block" />
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-full border-2 border-accent-rose/40 flex items-center justify-center">
+                    <Droplets size={16} className="text-accent-rose" />
+                  </div>
+                  <span className="font-body text-xs font-medium text-text-secondary">Silicone Free</span>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
