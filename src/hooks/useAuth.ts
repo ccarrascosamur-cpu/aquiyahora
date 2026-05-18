@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
-const ADMIN_PASSWORD = 'aquiyahora2025';
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'aquiyahora2025';
 const AUTH_KEY = 'admin_auth';
 
 export function useAuth() {
