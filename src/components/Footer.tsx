@@ -19,7 +19,7 @@ export function Footer() {
   return (
     <footer className="w-full bg-cream border-t border-border-custom">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12 py-14 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           {/* Brand column */}
           <div>
             <h4 className="font-display font-bold text-xl text-text-primary">
@@ -68,7 +68,11 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <h5 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-4 mt-8">
+          </div>
+
+          {/* Categories column */}
+          <div>
+            <h5 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-4">
               Categorías
             </h5>
             <ul className="space-y-2">
@@ -111,6 +115,17 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-border-custom">
           <p className="font-body text-xs text-text-muted text-center">
             Aquí & Ahora &copy; {new Date().getFullYear()} — Representantes Oficiales en Chile
+          </p>
+          <p className="font-body text-xs text-text-muted/60 text-center mt-2">
+            Sitio creado por{' '}
+            <a
+              href="https://emmagination.cl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent-rose hover:underline"
+            >
+              Emmagination.cl
+            </a>
           </p>
         </div>
       </div>
