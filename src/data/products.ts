@@ -109,7 +109,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'aceites-aromaticos-ceremonia-de-magas',
     name: 'Aceites Aromáticos Ceremonia de Magas',
-    category: 'sets',
+    category: 'aceites',
     description: 'Aceites Aromáticos Ceremonia de Magas - Aquí & Ahora ✨ Un aceite aromatico versatil para sumar intencion y aroma a tus rituales cotidianos. Cada variante permite elegir la emocion o energia que quieres invitar al espacio, manteniendo una estetica coherente y cuidada. Puedes usarl',
     line: 'Ceremonia de Magas',
     aromas: ['Tonka & Cedro', 'Peonías e Hibiscus', 'Lima & Ozono', 'Higo & Sándalo'],
@@ -118,7 +118,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'aromatizantes-de-ambiente-y-tela-ceremonia-de-magas',
     name: 'Aromatizantes de Ambiente y Tela Ceremonia de Magas',
-    category: 'sets',
+    category: 'aromatizantes',
     description: 'Aromatizantes de Ambiente y Tela Ceremonia de Magas - Aquí & Ahora ✨ Una propuesta creada para que el aroma y la intencion acompanen tus rituales diarios con una estetica cuidada y una experiencia sensorial coherente. Cada variante cambia el mood sin perder la esencia del product',
     line: 'Ceremonia de Magas',
     aromas: ['Tonka & Cedro', 'Tierra- Higo & Sándalo', 'Peonías e Hibiscus', 'Lima & Ozono'],
@@ -161,7 +161,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'difusor-vidrio-huerta-organica',
     name: 'Difusores Varillas Huerta Organica',
-    category: 'sets',
+    category: 'difusores',
     description: '¡Nueva presentación en contenedor de vidrio color ámbar! De la huerta a tu hogar. Fragancias frescas para tu hogar. Esta línea trae a tu vida una sensación renovadora. Llená tus espacios con los aromas de la huerta y descubrí las nuevas sensaciones que traen. Vienen con varillas ',
     line: 'Huerta Organica',
     aromas: ['Cerezas de la Patagonia', 'Bergamotas de Calabria', 'Remolachas del Medio Oriente', 'Tomates del Mediterraneo'],
@@ -170,7 +170,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'difusores-colgantes-de-auto-aqui-y-ahora',
     name: 'Difusores Colgantes de Auto',
-    category: 'aromatizantes',
+    category: 'difusores',
     description: 'Difusores Colgantes de Auto - Aquí & Ahora ✨ Un difusor de varillas creado para acompanar el espacio de manera continua y elegante, con una presencia aromatica estable y sofisticada. Cada variante sostiene una intencion distinta para ayudarte a elegir segun el mood que quieras cr',
     aromas: ['Vainilla y Neroli', 'Gardenia y Lilas', 'Higos & Flores Blancas', 'Pomelo y Mandarina', 'Verbena y Limon', 'Bambu y Geranios', 'Esencias de la India', 'Sándalo & Grass'],
     image: '/product-images/difusores-colgantes-de-auto-aqui-y-ahora-1.jpg',
@@ -178,7 +178,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'aromatizantes-de-ambiente-y-tela-chic',
     name: 'Aromatizantes de Ambiente y Tela Chic',
-    category: 'sets',
+    category: 'aromatizantes',
     description: 'Aromatizantes de Ambiente y Tela Chic - Aquí & Ahora ✨ Una propuesta creada para que el aroma y la intencion acompanen tus rituales diarios con una estetica cuidada y una experiencia sensorial coherente. Cada variante cambia el mood sin perder la esencia del producto. Ideal para ',
     line: 'Chic',
     aromas: ['Vainilla & Neroli', 'Gardenia & Lilas', 'Bambú & Geranios', 'Higos & Flores Blancas', 'Esencias de la India', 'Jardines de Arabia'],
@@ -187,7 +187,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'porta-sahumerio-de-arena',
     name: 'Porta Sahumerio de Arena',
-    category: 'sets',
+    category: 'sahumerios',
     description: 'Porta Sahumerio de Arena - Aquí & Ahora ✨ Un sahumerio ideal para acompanar rituales, limpieza energetica o pequenos momentos de pausa con una fragancia que se queda en el ambiente de forma sutil. Cada variante esta asociada a una intencion distinta para que elijas segun lo que q',
     aromas: ['FLORES', 'HOJAS'],
     image: '/product-images/porta-sahumerio-de-arena-1.jpg',
@@ -220,7 +220,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'difusores-repuestos',
     name: 'Repuesto Difusor Mikado Linea Premium Aquí y Ahora',
-    category: 'sets',
+    category: 'repuestos',
     description: 'Repuesto Difusor Mikado Linea Premium ✨ Un difusor de varillas creado para acompanar el espacio de manera continua y elegante, con una presencia aromatica estable y sofisticada. Cada variante sostiene una intencion distinta para ayudarte a elegir segun el mood que quieras crear. ',
     line: 'Premium',
     aromas: ['Vainilla', 'Coco', 'Lavanda', 'Gardenia', 'Bambu y Geranios', 'Verbena y Limon', 'Pomelo y Mandarina', 'Higos y Flores Blancas', 'Esencias de la India', 'Maderas de Oriente'],
@@ -237,7 +237,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'set-jabon-liquido-aromatizante-estuche-exhibidor',
     name: 'Set Jabon Liquido + Aromatizante + Estuche Exhibidor',
-    category: 'sets',
+    category: 'aromatizantes',
     description: 'Set Jabon Liquido + Aromatizante + Estuche Exhibidor ✨ Un jabon liquido pensado para convertir la rutina en un momento sensorial mas lindo y significativo. La base del producto se mantiene, pero cada variante aporta una intencion aromatica distinta para acompanar tu estado de ani',
     aromas: ['Lavanda y Cedro', 'Gardenia y Lilas', 'Bambu y Geranios', 'Esencias de la India', 'Higos y Flores Blancas', 'Vainilla'],
     image: '/product-images/set-jabon-liquido-aromatizante-estuche-exhibidor-1.jpg',
@@ -245,7 +245,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'velon-de-soja-antique',
     name: 'Velones de Soja - Antique',
-    category: 'sets',
+    category: 'velas',
     description: 'En envase de vidrio, disponible en 3 colores según fragancia. Su diseño elegante y sus tres pabilos lo convierten en el detalle perfecto para crear una atmósfera cálida y única en tu hogar. BIENESTAR: Vainilla & Neroli. Gardenia & Lilas. PROSPERIDAD: Bambú & Geranios. TEMPLANZA: ',
     line: 'Antique',
     aromas: ['Esencias de la India', 'Higo & Flores Blancas', 'Vainilla & Neroli', 'Bambú & Geranios', 'COMBO VELONES ANTIQUE X 4 (1 C/U)'],
@@ -272,7 +272,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'repuesto-difusor-alchemy',
     name: 'Repuesto Difusor - Alchemy',
-    category: 'sets',
+    category: 'repuestos',
     description: 'Repuesto Difusor - Alchemy ✨ Un difusor de varillas creado para acompanar el espacio de manera continua y elegante, con una presencia aromatica estable y sofisticada. Cada variante sostiene una intencion distinta para ayudarte a elegir segun el mood que quieras crear. Ideal para ',
     line: 'Alchemy',
     aromas: ['Salvia & Tonka', 'Mandarina & Cedro', 'Amaranto & Sándalo', 'Vetiver & Coriandro'],
@@ -281,7 +281,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'sets-de-regalo-vela-antique-fosforos',
     name: 'Sets de Regalo - Vela Antique + Fósforos',
-    category: 'sets',
+    category: 'velas',
     description: 'Sets de Regalo - Vela Antique + Fósforos ✨ Una vela pensada para transformar una pausa cotidiana en un ritual sensorial lleno de intencion. Mantiene el look and feel de Portal Zen, con una experiencia aromatica calida, estetica y envolvente que acompana distintos estados emociona',
     line: 'Antique',
     aromas: ['Vainilla & Neroli (BEIGE)', 'Bambú & Geranios (MENTA)', 'Esencias de la India (CHOCOLATE)', 'Higo & Flores Blancas (CORAL)', 'Verbena & Limón'],
@@ -310,7 +310,7 @@ export const PRODUCTS: Product[] = [
     name: 'Polynesian Waters - Salvia Marina & Lima | Frescura y Calma para tu Hogar',
     category: 'sets',
     description: 'Polynesian Waters - Salvia Marina & Lima Un pack creado para transformar los espacios cotidianos en una pausa sensorial llena de frescura, calma y bienestar. Su combinacion de Salvia Marina & Lima entrega una sensacion limpia, luminosa y liviana que renueva la energia del ambient',
-    aromas: ['Default Title'],
+    aromas: [],
     image: '/product-images/polynesian-waters-salvia-marina-lima-pack-aroma-hogar-1.jpg',
   },
   {
@@ -318,7 +318,7 @@ export const PRODUCTS: Product[] = [
     name: 'Amazon Jungle - Madreselva & Ciprés | Energía Verde y Renovación',
     category: 'sets',
     description: 'Amazon Jungle - Madreselva & Cipres Un pack creado para llenar tus espacios de naturaleza viva, frescura botanica y energia renovadora. Su combinacion de Madreselva & Cipres entrega una sensacion verde, vibrante y envolvente que transforma el ambiente y conecta con una atmosfera ',
-    aromas: ['Default Title'],
+    aromas: [],
     image: '/product-images/amazon-jungle-madreselva-cipres-pack-aroma-hogar-1.jpg',
   },
   {
@@ -326,13 +326,29 @@ export const PRODUCTS: Product[] = [
     name: 'Nordic Fjords - Arce & Palo Santo | Calma Profunda y Pureza Natural',
     category: 'sets',
     description: 'Nordic Fjords - Arce & Palo Santo Un pack creado para llenar tus espacios de aire limpio, calma serena y una sensación de refugio natural. Su combinación de Arce & Palo Santo entrega una atmósfera fresca, elegante y envolvente que transforma el ambiente y conecta con una energía ',
-    aromas: ['Default Title'],
+    aromas: [],
     image: '/product-images/nordic-fjords-arce-palo-santo-calma-profunda-y-pureza-natural-1.jpg',
+  },
+  {
+    id: 'ritual-prosperidad-bambu-geranios-abundancia-y-nuevos-caminos',
+    name: 'Ritual Prosperidad Bambú & Geranios – Abundancia y Nuevos Caminos',
+    category: 'sets',
+    description: '💚 Ritual Prosperidad Bambú & Geranios Abundancia · Renovación · Nuevos caminos El Ritual Prosperidad fue creado para activar una energía de crecimiento, confianza y apertura. Un set perfecto para acompañar nuevos comienzos, proyectos, reuniones importantes o momentos en que neces',
+    aromas: [],
+    image: '/product-images/ritual-prosperidad-bambu-geranios-abundancia-y-nuevos-caminos-1.jpg',
+  },
+  {
+    id: 'ritual-serenidad-gardenias-lilas-spa-en-casa-equilibrio-y-calma',
+    name: 'Ritual Serenidad Gardenias & Lilas – Spa en Casa · Equilibrio y calma',
+    category: 'sets',
+    description: '💜 Ritual Serenidad Gardenias & Lilas Calma profunda · Armonía · Equilibrio interior El Ritual Serenidad fue creado para ayudarte a pausar, reconectar y suavizar la mente. Un set ideal para momentos de descanso, autocuidado y conexión personal, pensado para transformar tu rutina e',
+    aromas: [],
+    image: '/product-images/ritual-serenidad-gardenias-lilas-spa-en-casa-equilibrio-y-calma-1.jpg',
   },
   {
     id: 'velas-aromaticas-6-x-10',
     name: 'Velas Aromáticas 6 X 10',
-    category: 'sets',
+    category: 'velas',
     description: 'Nuestras velas aromáticas están pensadas para acompañar cualquier rincón del hogar. Su diseño limpio y sus notas suaves crean una atmósfera cálida y equilibrada. Tamaño: 6 x 10 cm. Instrucciones de uso .Quitá todas las etiquetas antes de encender la vela. .En el primer uso, dejal',
     aromas: ['Vainilla & Neroli', 'Lavanda & Cedro', 'Gardenia & Lilas', 'Coco & Sandalo', 'Esencias de la India', 'Sándalo & Grass', 'Bambu & Geranios', 'Verbena & Limon', 'Higo & Flores Blancas', 'Pomelo & Mandarina', 'COMBO VELAS 6 X 10 AROMÁTICAS x 10 UN (1 C/U)'],
     image: '/product-images/velas-aromaticas-6-x-10-1.jpg',
@@ -340,7 +356,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'velas-aromaticas-de-noche-pack-x-6',
     name: 'Velas Aromáticas de Noche - PACK X 6',
-    category: 'sets',
+    category: 'velas',
     description: 'Dale a tus espacios una luz suave y un aroma envolvente con este set de velas pensado para acompañar tus noches. Cada vela está diseñada para crear un ambiente cálido y relajante, ideal para momentos de calma, lectura, descanso o simple disfrute. Contenedor: Envase metálico indiv',
     aromas: ['BIENESTAR- Vainilla & Neroli', 'Gardenia & Lilas', 'Esencias de la India', 'Bambu & Geranios', 'Higo & Flores Blancas', 'COMBO VELAS AROMÁTICAS DE NOCHE PACK X 6 x 5 UN (1 C/U)'],
     image: '/product-images/velas-aromaticas-de-noche-pack-x-6-1.jpg',
@@ -357,7 +373,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'jabones-en-barra-set-x-2-150grs',
     name: 'Jabones Naturales - SET X 2 - 150g',
-    category: 'sets',
+    category: 'jabones',
     description: 'Un set pensado para acompañar tu rutina con variedad y equilibrio. Incluye jabones naturales con fragancias diferentes según el modelo, que limpian suavemente y ayudan a mantener la hidratación de la piel gracias a la manteca de karité. Ideal para regalar o para sumar un detalle ',
     aromas: ['Floral Fig + Dulzura', 'Prosperidad + Relajación', 'Bienestar + Armonía', 'Serenidad + Balance', 'COMBO JABONES EN BARRA SETX2 X 4 (1 C/U)'],
     image: '/product-images/jabones-en-barra-set-x-2-150grs-1.jpg',
@@ -374,7 +390,7 @@ export const PRODUCTS: Product[] = [
   {
     id: 'velas-de-soja-premium-xl-blend',
     name: 'Velas de Soja PREMIUM XL - BLEND',
-    category: 'sets',
+    category: 'velas',
     description: 'Decorá y aromatizá tus ambientes con nuestras Velas Premium Extra Grandes con doble pabilo. Consejos para el cuidado de tu vela - Recorta la mecha a 1 cm antes de encenderla para un quemado lento y parejo. - Déjala encendida hasta que la cera se derrita hasta al borde, para evita',
     line: 'Premium',
     aromas: ['Vainilla & Gardenia', 'Vetiver & Bergamota'],

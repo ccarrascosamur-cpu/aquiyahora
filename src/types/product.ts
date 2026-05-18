@@ -1,4 +1,4 @@
-export type Category = 'velas' | 'aromatizantes' | 'difusores' | 'aceites' | 'sahumerios' | 'jabones' | 'sets' | 'papeleria';
+export type Category = 'velas' | 'aromatizantes' | 'difusores' | 'aceites' | 'sahumerios' | 'jabones' | 'sets' | 'papeleria' | 'repuestos';
 
 export interface Product {
   id: string;
@@ -94,6 +94,15 @@ export const CATEGORIES: CategoryInfo[] = [
     image: '/category-papeleria.jpg',
     gradient: 'from-pink-50/80 to-cream',
   },
+  {
+    slug: 'repuestos',
+    name: 'Repuestos',
+    nameEn: 'Refills',
+    icon: 'RefreshCw',
+    count: 2,
+    image: '/category-repuestos.jpg',
+    gradient: 'from-green-50/80 to-cream',
+  },
 ];
 
 export const CATEGORY_LABELS: Record<Category, string> = {
@@ -105,4 +114,5 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   jabones: 'Jabones',
   sets: 'Sets',
   papeleria: 'Papelería',
+  repuestos: 'Repuestos',
 };
