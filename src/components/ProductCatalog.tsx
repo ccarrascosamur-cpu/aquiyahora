@@ -15,6 +15,7 @@ interface ProductCatalogProps {
   setSearchQuery: (q: string) => void;
   isAdmin: boolean;
   onEditProduct: (product: Product) => void;
+  onViewProduct: (product: Product) => void;
   catalogExpanded: boolean;
   onExpandCatalog: () => void;
 }
@@ -45,6 +46,7 @@ export function ProductCatalog({
   setSearchQuery,
   isAdmin,
   onEditProduct,
+  onViewProduct,
   catalogExpanded,
   onExpandCatalog,
 }: ProductCatalogProps) {
@@ -142,6 +144,7 @@ export function ProductCatalog({
                 product={product}
                 isAdmin={isAdmin}
                 onEdit={onEditProduct}
+                onView={onViewProduct}
                 index={i}
               />
             ))}

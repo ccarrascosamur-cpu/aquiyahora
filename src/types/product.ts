@@ -8,6 +8,7 @@ export interface Product {
   image?: string;
   line?: string;
   description?: string;
+  model?: string;
 }
 
 export interface CategoryInfo {

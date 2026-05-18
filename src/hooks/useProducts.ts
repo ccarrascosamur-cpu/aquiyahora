@@ -4,21 +4,23 @@ import { PRODUCTS } from '@/data/products';
 import { useLocalStorage } from './useLocalStorage';
 
 const IMAGES_KEY = 'product_images';
+const PRODUCTS_KEY = 'custom_products';
 
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [customProducts, setCustomProducts] = useLocalStorage<Product[]>(PRODUCTS_KEY, []);
   const [images, setImages] = useLocalStorage<Record<string, string>>(IMAGES_KEY, {});
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('todos');
 
-  // Merge images into products
-  const productsWithImages = products.map(p => ({
+  // Merge base products with custom ones, then apply images
+  const baseProducts = [...PRODUCTS, ...customProducts];
+  const products = baseProducts.map(p => ({
     ...p,
     image: images[p.id] || p.image,
   }));
 
   // Filter products
-  const filteredProducts = productsWithImages.filter(p => {
+  const filteredProducts = products.filter(p => {
     const matchesCategory = activeCategory === 'todos' || p.category === activeCategory;
     const matchesSearch = !searchQuery || 
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -28,9 +30,6 @@ export function useProducts() {
 
   const uploadImage = useCallback((productId: string, imageData: string) => {
     setImages(prev => ({ ...prev, [productId]: imageData }));
-    setProducts(prev => prev.map(p => 
-      p.id === productId ? { ...p, image: imageData } : p
-    ));
   }, [setImages]);
 
   const deleteImage = useCallback((productId: string) => {
@@ -39,13 +38,45 @@ export function useProducts() {
       delete next[productId];
       return next;
     });
-    setProducts(prev => prev.map(p => 
-      p.id === productId ? { ...p, image: undefined } : p
-    ));
   }, [setImages]);
 
+  const updateProduct = useCallback((productId: string, updates: Partial<Product>) => {
+    // Check if it's a base product or custom product
+    const isBaseProduct = PRODUCTS.some(p => p.id === productId);
+    if (isBaseProduct) {
+      // For base products, store overrides in customProducts
+      setCustomProducts(prev => {
+        const existing = prev.find(p => p.id === productId);
+        if (existing) {
+          return prev.map(p => p.id === productId ? { ...p, ...updates } : p);
+        }
+        const base = PRODUCTS.find(p => p.id === productId)!;
+        return [...prev, { ...base, ...updates }];
+      });
+    } else {
+      setCustomProducts(prev =>
+        prev.map(p => p.id === productId ? { ...p, ...updates } : p)
+      );
+    }
+  }, [setCustomProducts]);
+
+  const addProduct = useCallback((product: Product) => {
+    setCustomProducts(prev => [...prev, product]);
+  }, [setCustomProducts]);
+
+  const removeProduct = useCallback((productId: string) => {
+    // Only allow removing custom products
+    setCustomProducts(prev => prev.filter(p => p.id !== productId));
+    // Also clean up image if exists
+    setImages(prev => {
+      const next = { ...prev };
+      delete next[productId];
+      return next;
+    });
+  }, [setCustomProducts, setImages]);
+
   return {
-    products: productsWithImages,
+    products,
     filteredProducts,
     searchQuery,
     setSearchQuery,
@@ -53,5 +84,8 @@ export function useProducts() {
     setActiveCategory,
     uploadImage,
     deleteImage,
+    updateProduct,
+    addProduct,
+    removeProduct,
   };
 }

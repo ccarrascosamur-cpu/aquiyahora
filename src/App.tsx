@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState, useCallback } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
@@ -9,6 +9,7 @@ import { BrandPartners } from '@/components/BrandPartners';
 import { CorporateGifts } from '@/components/CorporateGifts';
 import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
+import { ProductDetailPage } from '@/components/ProductDetailPage';
 import { AdminPage } from '@/pages/AdminPage';
 import { useProducts } from '@/hooks/useProducts';
 import { useAuth } from '@/hooks/useAuth';
@@ -25,6 +26,8 @@ interface HomePageProps {
   isAdmin: boolean;
   heroImage: string;
   aboutImage: string;
+  onViewProduct: (product: Product) => void;
+  onEditProduct: (product: Product) => void;
 }
 
 function HomePage({
@@ -37,6 +40,8 @@ function HomePage({
   isAdmin,
   heroImage,
   aboutImage,
+  onViewProduct,
+  onEditProduct,
 }: HomePageProps) {
   const [catalogExpanded, setCatalogExpanded] = useState(false);
 
@@ -72,7 +77,8 @@ function HomePage({
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           isAdmin={isAdmin}
-          onEditProduct={() => {}}
+          onEditProduct={onEditProduct}
+          onViewProduct={onViewProduct}
           catalogExpanded={catalogExpanded}
           onExpandCatalog={handleExpandCatalog}
         />
@@ -96,46 +102,80 @@ function App() {
     setSearchQuery,
     uploadImage,
     deleteImage,
+    updateProduct,
+    addProduct,
+    removeProduct,
   } = useProducts();
 
   const { isAuthenticated } = useAuth();
   const { getImage, uploadImage: uploadSiteImage, resetImage } = useSiteImages();
+  const navigate = useNavigate();
+
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleViewProduct = useCallback((product: Product) => {
+    setSelectedProduct(product);
+    navigate(`/?product=${product.id}`, { replace: true });
+  }, [navigate]);
+
+  const handleCloseProduct = useCallback(() => {
+    setSelectedProduct(null);
+    navigate('/', { replace: true });
+  }, [navigate]);
+
+  const handleEditProduct = useCallback((_product: Product) => {
+    navigate('/admin');
+  }, [navigate]);
 
   return (
-    <Routes>
-      <Route 
-        path="/" 
-        element={
-          <HomePage 
-            products={products}
-            filteredProducts={filteredProducts}
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            isAdmin={isAuthenticated}
-            heroImage={getImage('hero')}
-            aboutImage={getImage('about')}
-          />
-        } 
-      />
-      <Route 
-        path="/admin" 
-        element={
-          <AdminPage 
-            products={products} 
-            onUploadImage={uploadImage} 
-            onDeleteImage={deleteImage}
-            heroImage={getImage('hero')}
-            aboutImage={getImage('about')}
-            onUploadHeroImage={(data: string) => uploadSiteImage('hero', data)}
-            onResetHeroImage={() => resetImage('hero')}
-            onUploadAboutImage={(data: string) => uploadSiteImage('about', data)}
-            onResetAboutImage={() => resetImage('about')}
-          />
-        } 
-      />
-    </Routes>
+    <>
+      <Routes>
+        <Route 
+          path="/" 
+          element={
+            <HomePage 
+              products={products}
+              filteredProducts={filteredProducts}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              isAdmin={isAuthenticated}
+              heroImage={getImage('hero')}
+              aboutImage={getImage('about')}
+              onViewProduct={handleViewProduct}
+              onEditProduct={handleEditProduct}
+            />
+          } 
+        />
+        <Route 
+          path="/admin" 
+          element={
+            <AdminPage 
+              products={products} 
+              onUploadImage={uploadImage} 
+              onDeleteImage={deleteImage}
+              onUpdateProduct={updateProduct}
+              onAddProduct={addProduct}
+              onRemoveProduct={removeProduct}
+              heroImage={getImage('hero')}
+              aboutImage={getImage('about')}
+              onUploadHeroImage={(data: string) => uploadSiteImage('hero', data)}
+              onResetHeroImage={() => resetImage('hero')}
+              onUploadAboutImage={(data: string) => uploadSiteImage('about', data)}
+              onResetAboutImage={() => resetImage('about')}
+            />
+          } 
+        />
+      </Routes>
+
+      {selectedProduct && (
+        <ProductDetailPage 
+          product={selectedProduct} 
+          onClose={handleCloseProduct} 
+        />
+      )}
+    </>
   );
 }
 
