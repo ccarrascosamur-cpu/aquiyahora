@@ -3,7 +3,11 @@ import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 
-export function About() {
+interface AboutProps {
+  image?: string | null;
+}
+
+export function About({ image }: AboutProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef);
 
@@ -66,7 +70,7 @@ export function About() {
           >
             <div className="rounded-2xl overflow-hidden shadow-lg">
               <img
-                src="/about-showcase.jpg"
+                src={image || '/about-showcase.jpg'}
                 alt="Productos Aquí y Ahora"
                 className="w-full h-auto object-cover"
                 loading="lazy"

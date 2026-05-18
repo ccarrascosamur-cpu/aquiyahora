@@ -2,7 +2,11 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
-export function Hero() {
+interface HeroProps {
+  image?: string | null;
+}
+
+export function Hero({ image }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -170,7 +174,7 @@ export function Hero() {
               {/* Main image container */}
               <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-text-primary/5">
                 <img
-                  src="/hero-lifestyle.jpg"
+                  src={image || '/hero-lifestyle.jpg'}
                   alt="Velas de soja artesanales, difusores y productos de bienestar Aquí y Ahora"
                   className="w-full h-auto object-cover aspect-[4/5] lg:aspect-[3/4]"
                 />

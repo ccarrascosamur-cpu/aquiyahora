@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, Pencil, Upload, Check, ChevronLeft, Trash2, LogOut, Search } from 'lucide-react';
+import { Lock, Pencil, Upload, Check, ChevronLeft, Trash2, LogOut, Search, Image, RotateCcw } from 'lucide-react';
 import type { Product } from '@/types/product';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/useToast';
@@ -10,11 +10,17 @@ interface AdminPageProps {
   products: Product[];
   onUploadImage: (productId: string, imageData: string) => void;
   onDeleteImage: (productId: string) => void;
+  heroImage: string;
+  aboutImage: string;
+  onUploadHeroImage: (imageData: string) => void;
+  onResetHeroImage: () => void;
+  onUploadAboutImage: (imageData: string) => void;
+  onResetAboutImage: () => void;
 }
 
-type View = 'login' | 'list' | 'edit';
+type View = 'login' | 'list' | 'edit' | 'home-images';
 
-export function AdminPage({ products, onUploadImage, onDeleteImage }: AdminPageProps) {
+export function AdminPage({ products, onUploadImage, onDeleteImage, heroImage, aboutImage, onUploadHeroImage, onResetHeroImage, onUploadAboutImage, onResetAboutImage }: AdminPageProps) {
   const { isAuthenticated, login, logout } = useAuth();
   const { toasts, addToast } = useToast();
   const [view, setView] = useState<View>(isAuthenticated ? 'list' : 'login');
@@ -24,6 +30,8 @@ export function AdminPage({ products, onUploadImage, onDeleteImage }: AdminPageP
   const [searchQuery, setSearchQuery] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const homeImageInputRef = useRef<HTMLInputElement>(null);
+  const aboutImageInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   // Handle login submit
@@ -77,6 +85,21 @@ export function AdminPage({ products, onUploadImage, onDeleteImage }: AdminPageP
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) handleImageUpload(file);
+  };
+
+  // Handle site image uploads
+  const handleSiteImageUpload = (file: File, uploadFn: (data: string) => void, label: string) => {
+    if (file.size > 2 * 1024 * 1024) {
+      addToast('La imagen debe ser menor a 2MB', 'error');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imageData = e.target?.result as string;
+      uploadFn(imageData);
+      addToast(`${label} actualizada`, 'success');
+    };
+    reader.readAsDataURL(file);
   };
 
   const filteredList = products.filter(p =>
@@ -169,9 +192,6 @@ export function AdminPage({ products, onUploadImage, onDeleteImage }: AdminPageP
                 >
                   Acceder
                 </button>
-                <p className="text-xs text-text-muted font-body mt-4">
-                  Contraseña de demo: aquiyahora2025
-                </p>
               </div>
             </div>
           </motion.div>
@@ -200,6 +220,17 @@ export function AdminPage({ products, onUploadImage, onDeleteImage }: AdminPageP
                   {products.filter(p => !p.image).length}
                 </p>
               </div>
+            </div>
+
+            {/* Quick actions */}
+            <div className="flex flex-wrap gap-3 mb-8">
+              <button
+                onClick={() => setView('home-images')}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-border-custom rounded-xl font-body text-sm text-text-secondary hover:border-accent-rose/40 hover:text-accent-rose transition-colors"
+              >
+                <Image size={16} />
+                Imágenes del Home
+              </button>
             </div>
 
             {/* Search */}
@@ -249,6 +280,107 @@ export function AdminPage({ products, onUploadImage, onDeleteImage }: AdminPageP
                   </div>
                 </button>
               ))}
+            </div>
+          </motion.div>
+        )}
+
+        {view === 'home-images' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <button
+              onClick={() => setView('list')}
+              className="mb-6 flex items-center gap-2 font-body text-sm text-text-secondary hover:text-accent-rose transition-colors"
+            >
+              <ChevronLeft size={16} />
+              Volver al listado
+            </button>
+
+            <h2 className="font-display text-xl font-semibold text-text-primary mb-6">
+              Imágenes del Home
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Hero image */}
+              <div className="bg-white rounded-2xl border border-border-custom p-6 shadow-sm">
+                <h3 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-4">
+                  Imagen Principal (Hero)
+                </h3>
+                <div className="relative rounded-xl overflow-hidden bg-cream mb-4 aspect-[4/3]">
+                  <img
+                    src={heroImage}
+                    alt="Hero preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => homeImageInputRef.current?.click()}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-accent-rose text-white rounded-pill font-body text-xs font-medium hover:bg-[#D88AAD] transition-colors"
+                  >
+                    <Upload size={14} />
+                    Cambiar imagen
+                  </button>
+                  <input
+                    ref={homeImageInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleSiteImageUpload(file, onUploadHeroImage, 'Hero');
+                    }}
+                    className="hidden"
+                  />
+                  <button
+                    onClick={() => { onResetHeroImage(); addToast('Imagen restaurada', 'success'); }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-accent-rose/40 transition-colors"
+                  >
+                    <RotateCcw size={14} />
+                    Restaurar original
+                  </button>
+                </div>
+              </div>
+
+              {/* About image */}
+              <div className="bg-white rounded-2xl border border-border-custom p-6 shadow-sm">
+                <h3 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-4">
+                  Imagen Nosotros (About)
+                </h3>
+                <div className="relative rounded-xl overflow-hidden bg-cream mb-4 aspect-[4/3]">
+                  <img
+                    src={aboutImage}
+                    alt="About preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => aboutImageInputRef.current?.click()}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-accent-rose text-white rounded-pill font-body text-xs font-medium hover:bg-[#D88AAD] transition-colors"
+                  >
+                    <Upload size={14} />
+                    Cambiar imagen
+                  </button>
+                  <input
+                    ref={aboutImageInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleSiteImageUpload(file, onUploadAboutImage, 'Nosotros');
+                    }}
+                    className="hidden"
+                  />
+                  <button
+                    onClick={() => { onResetAboutImage(); addToast('Imagen restaurada', 'success'); }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-accent-rose/40 transition-colors"
+                  >
+                    <RotateCcw size={14} />
+                    Restaurar original
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

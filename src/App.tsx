@@ -12,6 +12,20 @@ import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { AdminPage } from '@/pages/AdminPage';
 import { useProducts } from '@/hooks/useProducts';
 import { useAuth } from '@/hooks/useAuth';
+import { useSiteImages } from '@/hooks/useSiteImages';
+import type { Product } from '@/types/product';
+
+interface HomePageProps {
+  products: Product[];
+  filteredProducts: Product[];
+  activeCategory: string;
+  setActiveCategory: (cat: string) => void;
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  isAdmin: boolean;
+  heroImage: string;
+  aboutImage: string;
+}
 
 function HomePage({
   products,
@@ -21,15 +35,9 @@ function HomePage({
   searchQuery,
   setSearchQuery,
   isAdmin,
-}: {
-  products: ReturnType<typeof useProducts>['products'];
-  filteredProducts: ReturnType<typeof useProducts>['filteredProducts'];
-  activeCategory: string;
-  setActiveCategory: (cat: string) => void;
-  searchQuery: string;
-  setSearchQuery: (q: string) => void;
-  isAdmin: boolean;
-}) {
+  heroImage,
+  aboutImage,
+}: HomePageProps) {
   const [catalogExpanded, setCatalogExpanded] = useState(false);
 
   const handleExpandCatalog = useCallback(() => {
@@ -50,8 +58,8 @@ function HomePage({
       <Navigation onSearchClick={() => {}} />
 
       <main>
-        <Hero />
-        <About />
+        <Hero image={heroImage} />
+        <About image={aboutImage} />
         <Categories 
           onSelectCategory={handleSelectCategory} 
           activeCategory={activeCategory}
@@ -91,6 +99,7 @@ function App() {
   } = useProducts();
 
   const { isAuthenticated } = useAuth();
+  const { getImage, uploadImage: uploadSiteImage, resetImage } = useSiteImages();
 
   return (
     <Routes>
@@ -105,6 +114,8 @@ function App() {
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             isAdmin={isAuthenticated}
+            heroImage={getImage('hero')}
+            aboutImage={getImage('about')}
           />
         } 
       />
@@ -114,7 +125,13 @@ function App() {
           <AdminPage 
             products={products} 
             onUploadImage={uploadImage} 
-            onDeleteImage={deleteImage} 
+            onDeleteImage={deleteImage}
+            heroImage={getImage('hero')}
+            aboutImage={getImage('about')}
+            onUploadHeroImage={(data: string) => uploadSiteImage('hero', data)}
+            onResetHeroImage={() => resetImage('hero')}
+            onUploadAboutImage={(data: string) => uploadSiteImage('about', data)}
+            onResetAboutImage={() => resetImage('about')}
           />
         } 
       />
