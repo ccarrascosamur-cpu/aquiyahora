@@ -94,16 +94,13 @@ export function CorporateGifts() {
                 desc: 'Productos naturales, veganos y hechos artesanalmente.',
               },
               {
-                icon: Briefcase,
-                title: 'Branding opcional',
-                desc: 'Posibilidad de incluir tu logo o mensaje personalizado.',
+                icon: Globe,
+                title: 'Envíos a todo Chile',
+                desc: 'Despacho a cualquier región del país a través de Portal Zen.',
               },
-            ].map((feature, i) => (
-              <motion.div
+            ].map((feature) => (
+              <div
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
                 className="p-6 rounded-card bg-cream border border-border-custom/60 hover:border-accent-rose/30 hover:shadow-card-hover transition-all duration-300"
               >
                 <div className="w-10 h-10 rounded-xl bg-accent-rose/10 flex items-center justify-center mb-4">
@@ -115,39 +112,34 @@ export function CorporateGifts() {
                 <p className="font-body text-xs text-text-secondary leading-relaxed">
                   {feature.desc}
                 </p>
-              </motion.div>
+              </div>
             ))}
 
             {/* Brand values badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.7 }}
-              className="sm:col-span-2 mt-2"
-            >
+            <div className="sm:col-span-2 mt-2">
               <div className="flex flex-wrap items-center justify-center gap-6 p-5 rounded-card bg-cream border border-border-custom/60">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-full border-2 border-accent-rose/40 flex items-center justify-center">
                     <Globe size={16} className="text-accent-rose" />
                   </div>
-                  <span className="font-body text-xs font-medium text-text-secondary">Earth Friendly</span>
+                  <span className="font-body text-xs font-medium text-text-secondary">Amigable con la Tierra</span>
                 </div>
                 <div className="w-px h-6 bg-border-custom hidden sm:block" />
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-full border-2 border-accent-rose/40 flex items-center justify-center">
                     <Leaf size={16} className="text-accent-rose" />
                   </div>
-                  <span className="font-body text-xs font-medium text-text-secondary">Natural Extracts</span>
+                  <span className="font-body text-xs font-medium text-text-secondary">Extractos Naturales</span>
                 </div>
                 <div className="w-px h-6 bg-border-custom hidden sm:block" />
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-full border-2 border-accent-rose/40 flex items-center justify-center">
                     <Droplets size={16} className="text-accent-rose" />
                   </div>
-                  <span className="font-body text-xs font-medium text-text-secondary">Silicone Free</span>
+                  <span className="font-body text-xs font-medium text-text-secondary">Sin Siliconas</span>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>

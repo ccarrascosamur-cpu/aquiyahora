@@ -522,7 +522,7 @@ export function AdminPage({
               {/* About image */}
               <div className="bg-white rounded-2xl border border-border-custom p-6 shadow-sm">
                 <h3 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-4">
-                  Imagen Nosotros (About)
+                  Imagen Nosotros
                 </h3>
                 <div className="relative rounded-xl overflow-hidden bg-cream mb-4 aspect-[4/3]">
                   <img
