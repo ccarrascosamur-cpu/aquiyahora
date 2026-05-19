@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Search, X, ArrowRight, Grid3X3 } from 'lucide-react';
 import type { Product } from '@/types/product';
 import { CATEGORIES } from '@/types/product';
@@ -136,54 +136,44 @@ export function ProductCatalog({
         </div>
 
         {/* Product grid */}
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
-          <AnimatePresence mode="popLayout">
-            {displayProducts.map((product, i) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                isAdmin={isAdmin}
-                onEdit={onEditProduct}
-                onView={onViewProduct}
-                index={i}
-              />
-            ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
+          {displayProducts.map((product, i) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              isAdmin={isAdmin}
+              onEdit={onEditProduct}
+              onView={onViewProduct}
+              index={i}
+            />
+          ))}
 
-            {/* CTA Card para expandir el catálogo (solo en preview) */}
-            {isPreview && (
-              <motion.button
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.25, delay: displayProducts.length * 0.03 }}
-                onClick={onExpandCatalog}
-                className="group relative bg-gradient-to-br from-accent-rose/5 to-accent-lilac/5 rounded-card border-2 border-dashed border-accent-rose/30 hover:border-accent-rose/60 overflow-hidden hover:-translate-y-1 hover:shadow-card-hover transition-all duration-250 flex flex-col items-center justify-center min-h-[300px] cursor-pointer"
-              >
-                <div className="w-16 h-16 rounded-full bg-accent-rose/10 flex items-center justify-center mb-4 group-hover:bg-accent-rose/20 transition-colors">
-                  <Grid3X3 size={28} className="text-accent-rose" />
-                </div>
-                <h3 className="font-body font-semibold text-text-primary text-lg mb-2">
-                  Ver catálogo completo
-                </h3>
-                <p className="font-body text-sm text-text-secondary text-center px-6 mb-4">
-                  Explora los {products.length} productos disponibles en todas nuestras categorías
-                </p>
-                <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent-rose text-white font-body text-sm font-medium rounded-pill group-hover:bg-[#D88AAD] transition-colors">
-                  Ver todo
-                  <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
-                </span>
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </motion.div>
+          {/* CTA Card para expandir el catálogo (solo en preview) */}
+          {isPreview && (
+            <button
+              onClick={onExpandCatalog}
+              className="group relative bg-gradient-to-br from-accent-rose/5 to-accent-lilac/5 rounded-card border-2 border-dashed border-accent-rose/30 hover:border-accent-rose/60 overflow-hidden hover:-translate-y-1 hover:shadow-card-hover transition-all duration-250 flex flex-col items-center justify-center min-h-[300px] cursor-pointer"
+            >
+              <div className="w-16 h-16 rounded-full bg-accent-rose/10 flex items-center justify-center mb-4 group-hover:bg-accent-rose/20 transition-colors">
+                <Grid3X3 size={28} className="text-accent-rose" />
+              </div>
+              <h3 className="font-body font-semibold text-text-primary text-lg mb-2">
+                Ver catálogo completo
+              </h3>
+              <p className="font-body text-sm text-text-secondary text-center px-6 mb-4">
+                Explora los {products.length} productos disponibles en todas nuestras categorías
+              </p>
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent-rose text-white font-body text-sm font-medium rounded-pill group-hover:bg-[#D88AAD] transition-colors">
+                Ver todo
+                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+              </span>
+            </button>
+          )}
+        </div>
 
         {/* Empty state */}
         {!isPreview && filteredProducts.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-20"
-          >
+          <div className="text-center py-20">
             <p className="font-body text-text-muted text-lg">
               No se encontraron productos con tu búsqueda
             </p>
@@ -193,7 +183,7 @@ export function ProductCatalog({
             >
               Ver todos los productos
             </button>
-          </motion.div>
+          </div>
         )}
       </div>
     </section>

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Pencil, Eye } from 'lucide-react';
 import type { Product } from '@/types/product';
 import { CATEGORIES } from '@/types/product';
@@ -12,17 +11,12 @@ interface ProductCardProps {
   index: number;
 }
 
-export function ProductCard({ product, isAdmin, onEdit, onView, index }: ProductCardProps) {
+export function ProductCard({ product, isAdmin, onEdit, onView, index: _index }: ProductCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const categoryInfo = CATEGORIES.find(c => c.slug === product.category);
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.25, delay: index * 0.03 }}
+    <div
       className="group relative bg-white rounded-card border border-border-custom overflow-hidden hover:-translate-y-1 hover:shadow-card-hover transition-all duration-250 flex flex-col cursor-pointer"
       onClick={() => onView(product)}
     >
@@ -121,6 +115,6 @@ export function ProductCard({ product, isAdmin, onEdit, onView, index }: Product
           </p>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
