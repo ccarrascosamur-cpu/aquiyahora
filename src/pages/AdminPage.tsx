@@ -17,11 +17,13 @@ interface AdminPageProps {
   heroImage: string;
   heroVideo: string | null;
   aboutImage: string;
-  onUploadHeroImage: (imageData: string) => void;
-  onResetHeroImage: () => void;
-  onUploadAboutImage: (imageData: string) => void;
-  onResetAboutImage: () => void;
-  onSaveHeroVideo: (url: string | null) => void;
+  onUploadHeroImage: (imageData: string) => Promise<void>;
+  onResetHeroImage: () => Promise<void>;
+  onUploadAboutImage: (imageData: string) => Promise<void>;
+  onResetAboutImage: () => Promise<void>;
+  onSaveHeroVideo: (url: string | null) => Promise<void>;
+  githubToken: string;
+  onSaveGithubToken: (token: string) => void;
 }
 
 type View = 'login' | 'list' | 'edit' | 'home-images' | 'add';
@@ -64,6 +66,8 @@ export function AdminPage({
   onUploadAboutImage,
   onResetAboutImage,
   onSaveHeroVideo,
+  githubToken,
+  onSaveGithubToken,
 }: AdminPageProps) {
   const { isAuthenticated, login, logout } = useAuth();
   const { toasts, addToast } = useToast();
@@ -75,6 +79,8 @@ export function AdminPage({
   const [isDragging, setIsDragging] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [videoUrlInput, setVideoUrlInput] = useState(heroVideo || '');
+  const [tokenInput, setTokenInput] = useState(githubToken);
+  const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const homeImageInputRef = useRef<HTMLInputElement>(null);
   const aboutImageInputRef = useRef<HTMLInputElement>(null);
@@ -148,16 +154,23 @@ export function AdminPage({
     if (file) handleImageUpload(file);
   };
 
-  const handleSiteImageUpload = (file: File, uploadFn: (data: string) => void, label: string) => {
+  const handleSiteImageUpload = (file: File, uploadFn: (data: string) => Promise<void>, label: string) => {
     if (file.size > 2 * 1024 * 1024) {
       addToast('La imagen debe ser menor a 2MB', 'error');
       return;
     }
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const imageData = e.target?.result as string;
-      uploadFn(imageData);
-      addToast(`${label} actualizada`, 'success');
+      setIsSaving(true);
+      try {
+        await uploadFn(imageData);
+        addToast(`${label} actualizada — el sitio se actualizará en ~1 min`, 'success');
+      } catch (err) {
+        addToast(`Error: ${err instanceof Error ? err.message : 'Error desconocido'}`, 'error');
+      } finally {
+        setIsSaving(false);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -484,13 +497,45 @@ export function AdminPage({
             </h2>
 
             <div className="grid grid-cols-1 gap-6">
+              {/* GitHub token */}
+              <div className={`rounded-2xl border p-6 shadow-sm ${githubToken ? 'bg-white border-border-custom' : 'bg-amber-50 border-amber-200'}`}>
+                <h3 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-1">
+                  Token de GitHub
+                </h3>
+                <p className="font-body text-xs text-text-muted mb-4">
+                  Necesario para guardar cambios. Crea un token en GitHub → Settings → Developer settings → Personal access tokens → Fine-grained token, con permiso de escritura en este repositorio. Se guarda solo en este navegador.
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="password"
+                    value={tokenInput}
+                    onChange={(e) => setTokenInput(e.target.value)}
+                    placeholder="github_pat_..."
+                    className="flex-1 px-4 py-2.5 rounded-xl border border-border-custom font-body text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-rose/50 bg-cream"
+                  />
+                  <button
+                    onClick={() => { onSaveGithubToken(tokenInput.trim()); addToast('Token guardado', 'success'); }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-accent-rose text-white rounded-pill font-body text-xs font-medium hover:bg-[#D88AAD] transition-colors whitespace-nowrap"
+                  >
+                    <Save size={14} />
+                    Guardar
+                  </button>
+                </div>
+                {githubToken && (
+                  <p className="font-body text-xs text-green-600 mt-2 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                    Token configurado
+                  </p>
+                )}
+              </div>
+
               {/* Hero video URL */}
               <div className="bg-white rounded-2xl border border-border-custom p-6 shadow-sm">
                 <h3 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-1">
                   Video de Fondo (Hero)
                 </h3>
                 <p className="font-body text-xs text-text-muted mb-4">
-                  Pega una URL de YouTube, Vimeo o video directo (mp4). Se reproducirá en loop sin sonido ni controles. Deja el campo vacío para usar la imagen estática.
+                  URL de YouTube, Vimeo o video directo (.mp4). Autoplay en loop, sin sonido ni controles. Deja vacío para usar la imagen estática.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <input
@@ -502,23 +547,39 @@ export function AdminPage({
                   />
                   <div className="flex gap-2">
                     <button
-                      onClick={() => {
-                        onSaveHeroVideo(videoUrlInput.trim() || null);
-                        addToast('Video guardado', 'success');
+                      disabled={isSaving}
+                      onClick={async () => {
+                        setIsSaving(true);
+                        try {
+                          await onSaveHeroVideo(videoUrlInput.trim() || null);
+                          addToast('Video guardado — el sitio se actualizará en ~1 min', 'success');
+                        } catch (err) {
+                          addToast(`Error: ${err instanceof Error ? err.message : 'Error'}`, 'error');
+                        } finally {
+                          setIsSaving(false);
+                        }
                       }}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-accent-rose text-white rounded-pill font-body text-xs font-medium hover:bg-[#D88AAD] transition-colors whitespace-nowrap"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-accent-rose text-white rounded-pill font-body text-xs font-medium hover:bg-[#D88AAD] transition-colors whitespace-nowrap disabled:opacity-50"
                     >
                       <Save size={14} />
-                      Guardar
+                      {isSaving ? 'Guardando…' : 'Guardar'}
                     </button>
                     {heroVideo && (
                       <button
-                        onClick={() => {
-                          setVideoUrlInput('');
-                          onSaveHeroVideo(null);
-                          addToast('Video eliminado', 'success');
+                        disabled={isSaving}
+                        onClick={async () => {
+                          setIsSaving(true);
+                          try {
+                            setVideoUrlInput('');
+                            await onSaveHeroVideo(null);
+                            addToast('Video eliminado — el sitio se actualizará en ~1 min', 'success');
+                          } catch (err) {
+                            addToast(`Error: ${err instanceof Error ? err.message : 'Error'}`, 'error');
+                          } finally {
+                            setIsSaving(false);
+                          }
                         }}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-red-300 hover:text-red-500 transition-colors whitespace-nowrap"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-red-300 hover:text-red-500 transition-colors whitespace-nowrap disabled:opacity-50"
                       >
                         <RotateCcw size={14} />
                         Quitar video
@@ -529,7 +590,7 @@ export function AdminPage({
                 {heroVideo && (
                   <p className="font-body text-xs text-green-600 mt-3 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-                    Video activo: {heroVideo.length > 60 ? heroVideo.slice(0, 60) + '…' : heroVideo}
+                    Activo: {heroVideo.length > 60 ? heroVideo.slice(0, 60) + '…' : heroVideo}
                   </p>
                 )}
               </div>
@@ -566,8 +627,19 @@ export function AdminPage({
                     className="hidden"
                   />
                   <button
-                    onClick={() => { onResetHeroImage(); addToast('Imagen restaurada', 'success'); }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-accent-rose/40 transition-colors"
+                    disabled={isSaving}
+                    onClick={async () => {
+                      setIsSaving(true);
+                      try {
+                        await onResetHeroImage();
+                        addToast('Imagen restaurada — el sitio se actualizará en ~1 min', 'success');
+                      } catch (err) {
+                        addToast(`Error: ${err instanceof Error ? err.message : 'Error'}`, 'error');
+                      } finally {
+                        setIsSaving(false);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-accent-rose/40 transition-colors disabled:opacity-50"
                   >
                     <RotateCcw size={14} />
                     Restaurar original
@@ -606,8 +678,19 @@ export function AdminPage({
                     className="hidden"
                   />
                   <button
-                    onClick={() => { onResetAboutImage(); addToast('Imagen restaurada', 'success'); }}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-accent-rose/40 transition-colors"
+                    disabled={isSaving}
+                    onClick={async () => {
+                      setIsSaving(true);
+                      try {
+                        await onResetAboutImage();
+                        addToast('Imagen restaurada — el sitio se actualizará en ~1 min', 'success');
+                      } catch (err) {
+                        addToast(`Error: ${err instanceof Error ? err.message : 'Error'}`, 'error');
+                      } finally {
+                        setIsSaving(false);
+                      }
+                    }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-accent-rose/40 transition-colors disabled:opacity-50"
                   >
                     <RotateCcw size={14} />
                     Restaurar original

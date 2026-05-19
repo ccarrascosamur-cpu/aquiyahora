@@ -13,7 +13,7 @@ import { ProductDetailPage } from '@/components/ProductDetailPage';
 import { AdminPage } from '@/pages/AdminPage';
 import { useProducts } from '@/hooks/useProducts';
 import { useAuth } from '@/hooks/useAuth';
-import { useSiteImages } from '@/hooks/useSiteImages';
+import { useSiteConfig } from '@/hooks/useSiteConfig';
 import type { Product } from '@/types/product';
 
 interface HomePageProps {
@@ -110,7 +110,15 @@ function App() {
   } = useProducts();
 
   const { isAuthenticated } = useAuth();
-  const { getImage, uploadImage: uploadSiteImage, resetImage, setHeroVideo, getHeroVideo } = useSiteImages();
+  const {
+    getImage,
+    uploadSiteImage,
+    resetSiteImage,
+    setHeroVideo,
+    getHeroVideo,
+    githubToken,
+    saveGithubToken,
+  } = useSiteConfig();
   const navigate = useNavigate();
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -143,9 +151,9 @@ function App() {
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               isAdmin={isAuthenticated}
-              heroImage={getImage('hero')}
+              heroImage={getImage('heroImage')}
               heroVideo={getHeroVideo()}
-              aboutImage={getImage('about')}
+              aboutImage={getImage('aboutImage')}
               onViewProduct={handleViewProduct}
               onEditProduct={handleEditProduct}
             />
@@ -161,14 +169,16 @@ function App() {
               onUpdateProduct={updateProduct}
               onAddProduct={addProduct}
               onRemoveProduct={removeProduct}
-              heroImage={getImage('hero')}
+              heroImage={getImage('heroImage')}
               heroVideo={getHeroVideo()}
-              aboutImage={getImage('about')}
-              onUploadHeroImage={(data: string) => uploadSiteImage('hero', data)}
-              onResetHeroImage={() => resetImage('hero')}
-              onUploadAboutImage={(data: string) => uploadSiteImage('about', data)}
-              onResetAboutImage={() => resetImage('about')}
+              aboutImage={getImage('aboutImage')}
+              onUploadHeroImage={(data: string) => uploadSiteImage('heroImage', data)}
+              onResetHeroImage={() => resetSiteImage('heroImage')}
+              onUploadAboutImage={(data: string) => uploadSiteImage('aboutImage', data)}
+              onResetAboutImage={() => resetSiteImage('aboutImage')}
               onSaveHeroVideo={setHeroVideo}
+              githubToken={githubToken}
+              onSaveGithubToken={saveGithubToken}
             />
           } 
         />
