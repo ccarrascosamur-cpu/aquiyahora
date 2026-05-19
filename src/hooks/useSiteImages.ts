@@ -4,6 +4,7 @@ import { useLocalStorage } from './useLocalStorage';
 export interface SiteImages {
   hero: string | null;
   about: string | null;
+  heroVideo: string | null;
 }
 
 const STORAGE_KEY = 'site_images';
@@ -11,6 +12,7 @@ const STORAGE_KEY = 'site_images';
 const DEFAULT_IMAGES: SiteImages = {
   hero: '/hero-lifestyle.jpg',
   about: '/about-showcase.jpg',
+  heroVideo: null,
 };
 
 export function useSiteImages() {
@@ -28,8 +30,16 @@ export function useSiteImages() {
     setImages(prev => ({ ...prev, [key]: DEFAULT_IMAGES[key] }));
   }, [setImages]);
 
-  const getImage = useCallback((key: keyof SiteImages): string => {
+  const getImage = useCallback((key: 'hero' | 'about'): string => {
     return images[key] || DEFAULT_IMAGES[key] || '';
+  }, [images]);
+
+  const setHeroVideo = useCallback((url: string | null) => {
+    setImages(prev => ({ ...prev, heroVideo: url }));
+  }, [setImages]);
+
+  const getHeroVideo = useCallback((): string | null => {
+    return images.heroVideo ?? null;
   }, [images]);
 
   return {
@@ -38,5 +48,7 @@ export function useSiteImages() {
     deleteImage,
     resetImage,
     getImage,
+    setHeroVideo,
+    getHeroVideo,
   };
 }

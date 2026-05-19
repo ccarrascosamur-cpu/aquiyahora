@@ -25,6 +25,7 @@ interface HomePageProps {
   setSearchQuery: (q: string) => void;
   isAdmin: boolean;
   heroImage: string;
+  heroVideo: string | null;
   aboutImage: string;
   onViewProduct: (product: Product) => void;
   onEditProduct: (product: Product) => void;
@@ -39,6 +40,7 @@ function HomePage({
   setSearchQuery,
   isAdmin,
   heroImage,
+  heroVideo,
   aboutImage,
   onViewProduct,
   onEditProduct,
@@ -63,7 +65,7 @@ function HomePage({
       <Navigation onSearchClick={() => {}} />
 
       <main>
-        <Hero image={heroImage} />
+        <Hero image={heroImage} videoUrl={heroVideo} />
         <About image={aboutImage} />
         <Categories 
           onSelectCategory={handleSelectCategory} 
@@ -108,7 +110,7 @@ function App() {
   } = useProducts();
 
   const { isAuthenticated } = useAuth();
-  const { getImage, uploadImage: uploadSiteImage, resetImage } = useSiteImages();
+  const { getImage, uploadImage: uploadSiteImage, resetImage, setHeroVideo, getHeroVideo } = useSiteImages();
   const navigate = useNavigate();
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -142,6 +144,7 @@ function App() {
               setSearchQuery={setSearchQuery}
               isAdmin={isAuthenticated}
               heroImage={getImage('hero')}
+              heroVideo={getHeroVideo()}
               aboutImage={getImage('about')}
               onViewProduct={handleViewProduct}
               onEditProduct={handleEditProduct}
@@ -159,11 +162,13 @@ function App() {
               onAddProduct={addProduct}
               onRemoveProduct={removeProduct}
               heroImage={getImage('hero')}
+              heroVideo={getHeroVideo()}
               aboutImage={getImage('about')}
               onUploadHeroImage={(data: string) => uploadSiteImage('hero', data)}
               onResetHeroImage={() => resetImage('hero')}
               onUploadAboutImage={(data: string) => uploadSiteImage('about', data)}
               onResetAboutImage={() => resetImage('about')}
+              onSaveHeroVideo={setHeroVideo}
             />
           } 
         />

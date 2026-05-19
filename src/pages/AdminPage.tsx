@@ -15,11 +15,13 @@ interface AdminPageProps {
   onAddProduct: (product: Product) => void;
   onRemoveProduct: (productId: string) => void;
   heroImage: string;
+  heroVideo: string | null;
   aboutImage: string;
   onUploadHeroImage: (imageData: string) => void;
   onResetHeroImage: () => void;
   onUploadAboutImage: (imageData: string) => void;
   onResetAboutImage: () => void;
+  onSaveHeroVideo: (url: string | null) => void;
 }
 
 type View = 'login' | 'list' | 'edit' | 'home-images' | 'add';
@@ -55,11 +57,13 @@ export function AdminPage({
   onAddProduct,
   onRemoveProduct,
   heroImage,
+  heroVideo,
   aboutImage,
   onUploadHeroImage,
   onResetHeroImage,
   onUploadAboutImage,
   onResetAboutImage,
+  onSaveHeroVideo,
 }: AdminPageProps) {
   const { isAuthenticated, login, logout } = useAuth();
   const { toasts, addToast } = useToast();
@@ -70,6 +74,7 @@ export function AdminPage({
   const [searchQuery, setSearchQuery] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [videoUrlInput, setVideoUrlInput] = useState(heroVideo || '');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const homeImageInputRef = useRef<HTMLInputElement>(null);
   const aboutImageInputRef = useRef<HTMLInputElement>(null);
@@ -478,7 +483,58 @@ export function AdminPage({
               Imágenes del Home
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
+              {/* Hero video URL */}
+              <div className="bg-white rounded-2xl border border-border-custom p-6 shadow-sm">
+                <h3 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-1">
+                  Video de Fondo (Hero)
+                </h3>
+                <p className="font-body text-xs text-text-muted mb-4">
+                  Pega una URL de YouTube, Vimeo o video directo (mp4). Se reproducirá en loop sin sonido ni controles. Deja el campo vacío para usar la imagen estática.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="url"
+                    value={videoUrlInput}
+                    onChange={(e) => setVideoUrlInput(e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className="flex-1 px-4 py-2.5 rounded-xl border border-border-custom font-body text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-rose/50 bg-cream"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        onSaveHeroVideo(videoUrlInput.trim() || null);
+                        addToast('Video guardado', 'success');
+                      }}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-accent-rose text-white rounded-pill font-body text-xs font-medium hover:bg-[#D88AAD] transition-colors whitespace-nowrap"
+                    >
+                      <Save size={14} />
+                      Guardar
+                    </button>
+                    {heroVideo && (
+                      <button
+                        onClick={() => {
+                          setVideoUrlInput('');
+                          onSaveHeroVideo(null);
+                          addToast('Video eliminado', 'success');
+                        }}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border-custom rounded-pill font-body text-xs text-text-secondary hover:border-red-300 hover:text-red-500 transition-colors whitespace-nowrap"
+                      >
+                        <RotateCcw size={14} />
+                        Quitar video
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {heroVideo && (
+                  <p className="font-body text-xs text-green-600 mt-3 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                    Video activo: {heroVideo.length > 60 ? heroVideo.slice(0, 60) + '…' : heroVideo}
+                  </p>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Hero image */}
               <div className="bg-white rounded-2xl border border-border-custom p-6 shadow-sm">
                 <h3 className="font-body font-semibold text-sm uppercase tracking-wider text-text-primary mb-4">
@@ -558,7 +614,8 @@ export function AdminPage({
                   </button>
                 </div>
               </div>
-            </div>
+              </div>{/* end inner md:grid-cols-2 */}
+            </div>{/* end outer grid-cols-1 */}
           </motion.div>
         )}
 
