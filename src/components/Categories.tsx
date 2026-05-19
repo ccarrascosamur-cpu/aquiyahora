@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Flame, Droplets, Wind, Sparkles, Wand2, Heart, Gift, ArrowRight, PenTool } from 'lucide-react';
+import { Flame, Droplets, Wind, Sparkles, Wand2, Heart, Gift, ArrowRight, PenTool, RefreshCw } from 'lucide-react';
 import { CATEGORIES } from '@/types/product';
 import { useInView } from '@/hooks/useInView';
 
@@ -13,6 +13,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: 
   Heart,
   Gift,
   PenTool,
+  RefreshCw,
 };
 
 interface CategoriesProps {
@@ -48,15 +49,12 @@ export function Categories({ onSelectCategory, activeCategory }: CategoriesProps
 
         {/* Category Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {CATEGORIES.map((cat, i) => {
+          {CATEGORIES.map((cat) => {
             const Icon = ICON_MAP[cat.icon];
             const isActive = activeCategory === cat.slug;
             return (
-              <motion.button
+              <button
                 key={cat.slug}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
                 onClick={() => handleClick(cat.slug)}
                 className={`group relative flex flex-col items-start p-6 md:p-8 rounded-card border transition-all duration-250 hover:-translate-y-1.5 hover:shadow-card-hover cursor-pointer text-left ${
                   isActive
@@ -95,7 +93,7 @@ export function Categories({ onSelectCategory, activeCategory }: CategoriesProps
                       : 'text-text-muted group-hover:text-accent-rose group-hover:translate-x-1'
                   }`}
                 />
-              </motion.button>
+              </button>
             );
           })}
         </div>
