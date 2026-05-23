@@ -22,7 +22,10 @@ async function ghGet(path: string, token: string) {
     `https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,
     { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
   );
-  if (!res.ok) throw new Error(`GitHub ${res.status}: ${res.statusText}`);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({})) as { message?: string };
+    throw new Error(err.message || `GitHub ${res.status}: ${res.statusText}`);
+  }
   return res.json() as Promise<{ sha: string; content: string }>;
 }
 
@@ -71,14 +74,19 @@ export function useSiteConfig() {
   const patchConfig = useCallback(async (updates: Partial<SiteConfig>) => {
     if (!githubToken) throw new Error('Token de GitHub no configurado');
 
+    // Always fetch the latest SHA from GitHub to avoid conflicts
     let sha: string | null = null;
     let current: SiteConfig = config;
     try {
       const file = await ghGet(CONFIG_FILE, githubToken);
       sha = file.sha;
       current = JSON.parse(atob(file.content.replace(/\n/g, '')));
-    } catch {
-      // file doesn't exist yet, will be created
+    } catch (err) {
+      // If the file doesn't exist yet (404), sha stays null and we'll create it
+      // Any other error should be reported
+      if (err instanceof Error && !err.message.includes('404')) {
+        console.warn('No se pudo obtener site-config.json, se creará nuevo:', err.message);
+      }
     }
 
     const next: SiteConfig = { ...DEFAULTS, ...current, ...updates };
