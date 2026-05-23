@@ -1,0 +1,6 @@
+name = "aquiyahora"
+main = "src/worker.ts"
+compatibility_date = "2025-05-01"
+
+[site]
+bucket = "./dist"
